@@ -33,8 +33,8 @@ public class SortAnal {
         for (int i = 1; i < n; i++) {
             v = A[i];
             j = i - 1;
-            count++;
             while (j >= 0 && A[j] > v) {
+                count++;
                 A[j + 1] = A[j];
                 j--;
             }
