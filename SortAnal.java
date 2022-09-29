@@ -11,45 +11,41 @@ import java.io.IOException;
 import java.util.Random;
 
 public class SortAnal {
-    public static void Print(int _count, int sortType, int arraySize){
+    public static void Print(){
+
+        int arraySize, sortType = 0;
         try {
-            FileWriter sheets = new FileWriter("sheets.txt", true);
-            while (sortType <= 2){
-                if (sortType == 0) {
-                    sheets.write(arraySize + "\t");
-                    sheets.append(_count + "\r\n");
-                    Drivers(sortType);
+            String[] text = new String[20];
+            FileWriter sheets = new FileWriter("sheets.txt");
+            while (sortType <= 3){
+                for (int i = 1; i <= 20; i++) {
+                    arraySize = i * 1000;
+                    int _count  = SortAnalysis(Drivers(sortType, arraySize));
+                    if (sortType == 0) text[i - 1] = (arraySize + "\t" + _count); else
+                    if (sortType == 1 || sortType == 2) text[i - 1] = text[i - 1].concat("\t" + _count); else
+                        sheets.write(text[i - 1] + "\r\n");
                 }
+                sortType++;
             }
             sheets.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public static void Drivers(int _run){
-        int array_size;
+    public static int[] Drivers(int run, int _arraySize) {
         Random rd = new Random();
+        int[] sortArray = new int[_arraySize];
 
-        for (int i = 1; i <= 20; i++) {
-            if (_run == 3) break;
-            array_size = i * 1000;
-            int[] sortArray = new int[array_size];
-
-            for (int j = 0; j < array_size; j++) {
-                if (_run == 1) {
-                    sortArray[j] = j;
-                } else if (_run == 2) {
-                    sortArray[j] = (j * -1);
-                } else {
-                    sortArray[j] = rd.nextInt(1000000);
-                }
-            }
-            Print(SortAnalysis(sortArray), _run, i);
-            if (i == 20) {
-                _run++;
-                i = 0;
+        for (int j = 0; j < _arraySize; j++) {
+            if (run == 1) {
+                sortArray[j] = j;
+            } else if (run == 2) {
+                sortArray[j] = (j * -1);
+            } else {
+                sortArray[j] = rd.nextInt(1000000);
             }
         }
+        return sortArray;
     }
 
     public static int SortAnalysis(int[] A){
@@ -74,7 +70,6 @@ public class SortAnal {
     }
 
     public static void main(String[] a){
-        int run = 0;
 
         try {
             File sheets = new File("sheets.txt");
@@ -87,6 +82,6 @@ public class SortAnal {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-        Drivers(run);
+        Print();
     }
 }
